@@ -16,7 +16,11 @@
     {% if body is defined %}
         {{ body | default('It worked!') }}
     {% else %}
-        <div id="editor"></div>
+    <form method="GET" action="/" up-autosubmit>
+        <div class="container" style= "width:75rem">
+            <div id="editor"></div>
+        </div>
+    </form>
     {% endif %}
 {% endblock %}
 
@@ -26,6 +30,7 @@
     require.config({ paths: { 'vs': 'static/js/node_modules/monaco-editor/min/vs' }});
     require(['vs/editor/editor.main'], function() {
         editor = monaco.editor.create(document.getElementById('editor'), {
+            theme: "vs-dark",
             value: (
                 'function x() {\n' +
                 '    console.log("Hello world!");\n' +

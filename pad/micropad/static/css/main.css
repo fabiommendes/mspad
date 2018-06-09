@@ -1,7 +1,18 @@
 body {
-    background: black;
-    color: lime;
+    background: #282829;
+    color: lightgray;
     font-family: monospace;
+    display: inline-flex;
+    justify-content: space-between;
+}
+.container{
+    margin-left: 1rem; 
+    margin-top: 3.2rem;
+}
+
+.files-container{
+    background-color: #202020;
+    width: 15rem;
 }
 
 #editor {

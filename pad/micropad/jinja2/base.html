@@ -19,10 +19,6 @@
     <div class="container" style= "width:75rem">
         <div id="editor"></div>
     </div>
-    <form method="POST" action="/postForm" id="form">
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-        <textarea class="editor-text" name="hide" style="display:none;"></textarea>
-    </form>
     {% endif %}
 {% endblock %}
 
@@ -45,7 +41,6 @@
 
     var save = setInterval(function(event) {
         var value = window.editor.getValue();
-        $(".editor-text").html(value);
         $.ajax({
             url: "/ajax/postForm/",
             data: {

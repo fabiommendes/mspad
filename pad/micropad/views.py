@@ -95,10 +95,8 @@ def postForm(request):
     if request.method == "POST":
         form = FileForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
+            post = form.save(commit=True)
             post.save()
-            return redirect('post_detail', pk=post.pk)
     else:
-        form = PasteForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+        form = FileForm()
+    return render(request, 'micropad/editor.html', {'form': form})

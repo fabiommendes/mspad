@@ -7,4 +7,5 @@ from . import views
 urlpatterns = [
     re_path(r'^(?P<path>(?:[a-z]+/)*)$', views.folder_list, name='folder-list'),
     re_path(r'^(?P<path>(?:[a-z]+/)*)(?P<name>[a-z]+)(?P<ext>\.[a-z]+)$', views.editor, name='editor'),
+    re_path(r'^ajax/postForm/$', views.postForm, name='postForm'),
 ]

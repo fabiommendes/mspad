@@ -10,7 +10,7 @@ class File(models.Model):
     """
     text = models.TextField()
     name = models.CharField(max_length=100)
-    uri = models.CharField(max_length=140, unique=True)
+    uri = models.CharField(max_length=140, unique=True, blank=True, null=True)
     folder = models.ForeignKey('Folder', null=True, blank=True, on_delete=models.CASCADE)
 
 

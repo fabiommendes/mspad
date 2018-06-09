@@ -43,11 +43,7 @@
     require(['vs/editor/editor.main'], function() {
         editor = monaco.editor.create(document.getElementById('editor'), {
             theme: "vs-dark",
-            value: (
-                'function x() {\n' +
-                '    console.log("Hello world!");\n' +
-                '}'
-            ),
+          value: ('{{file.text}}'),
           language: '{{language}}'
         });
     });

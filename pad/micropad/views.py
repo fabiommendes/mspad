@@ -65,6 +65,24 @@ def folder_list(request, path):
 def editor(request, path, name, ext):
     last_father = ""
 
+    try:
+
+        file = File.objects.get(name=name)
+    except File.DoesNotExist:
+        file = {'text': "insert your code"}
+
+
+
+    ctx = {
+        'language': get_language(ext),
+        'file': file
+    }
+
+    return render(request, 'micropad/editor.html', ctx)
+
+
+def postForm(request, path, name, ext):
+
     if path is not None:
         folders = path.split('/')
         print(folders)
@@ -83,23 +101,11 @@ def editor(request, path, name, ext):
     try:
         archive = File.objects.get(name=name)
     except File.DoesNotExist:
-        archive = File.objects.create(text="", name=name, uri=path+name+ext, folder=Folder.objects.get(name=last_father))
+        archive = File.objects.create(text=request.POST['text'], name=name, uri=path+name+ext, folder=Folder.objects.get(name=last_father))
 
     ctx = {
-        'file': archive,
-        'language': get_language(ext)
+        'language': get_language(ext),
+        'file': archive
     }
 
     return render(request, 'micropad/editor.html', ctx)
-
-def postForm(request, path, name, ext):
-    if request.method == "POST":
-        data = { 'text': request.POST["text"], 'path': path, 'name': name + ext } 
-        form = FileForm(data)
-        print(request.POST['text'])
-        if form.is_valid():
-            post = form.save(commit=True)
-            post.save()
-    else:
-        form = FileForm()
-    return render(request, 'micropad/editor.html', {'form': form})

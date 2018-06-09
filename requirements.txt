@@ -5,5 +5,5 @@ jinja2
 pytest
 pytest-django
 pytest-coverage
-git+http://github.com/fabiommendes/django-boogie.git/
-git+http://github.com/fabiommendes/hyperpython.git/
+-e git+http://github.com/fabiommendes/django-boogie.git/#egg=boggie
+-e git+http://github.com/fabiommendes/hyperpython.git/#egg=hyperpython

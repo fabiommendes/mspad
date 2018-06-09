@@ -9,6 +9,7 @@
     <script src="/static/js/node_modules/monaco-editor/min/vs/loader.js"></script>
     <script src="monaco-editor/min/vs/loader.js"></script>
     <script src="/static/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 
 <body>
@@ -19,11 +20,24 @@
     <div class="container" style= "width:75rem">
         <div id="editor"></div>
     </div>
+    <div class="csrf">
+        {{ csrf_token }}
+    </div>
     {% endif %}
 {% endblock %}
 
 <script>
     var editor;
+
+    var getCSRFTokenValue = function() {
+        return $(".csrf").text().trim();
+    }
+
+    //$("body").bind("ajaxSend", function(elm, xhr, s){
+      //  if (s.type == "POST") {
+        //    xhr.setRequestHeader('X-CSRF-Token', getCSRFTokenValue());
+        //}    
+    //});
 
     require.config({ paths: { 'vs': 'static/js/node_modules/monaco-editor/min/vs' }});
     require(['vs/editor/editor.main'], function() {
@@ -38,17 +52,23 @@
         });
     });
     
+    var url = window.location.href.substr(window.location.href.lastIndexOf("/")+1);
 
     var save = setInterval(function(event) {
         var value = window.editor.getValue();
         $.ajax({
-            url: "/ajax/postForm/",
-            data: {
-                'value': value
+            url: "/ajax/postForm/" + url,
+            type: "POST",
+            headers: {
+                'X-CSRFToken': getCSRFTokenValue(),
             },
-            dataType: 'json'
+            data: {
+                'text': value
+            },
+            error: function(jqXHR, textStatus, errorThrown, data) {
+            console.log(textStatus, errorThrown, data);
+            }
         }); 
-
     }, 4000);
 
 

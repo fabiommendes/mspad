@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import File, Folder
+from .forms import FileForm
 
 language = {
     ".txt": "plaintext",
@@ -91,9 +92,11 @@ def editor(request, path, name, ext):
 
     return render(request, 'micropad/editor.html', ctx)
 
-def postForm(request):
+def postForm(request, path, name, ext):
     if request.method == "POST":
-        form = FileForm(request.POST)
+        data = { 'text': request.POST["text"], 'path': path, 'name': name + ext } 
+        form = FileForm(data)
+        print(request.POST['text'])
         if form.is_valid():
             post = form.save(commit=True)
             post.save()

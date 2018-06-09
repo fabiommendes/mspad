@@ -39,7 +39,7 @@
         //}    
     //});
 
-    require.config({ paths: { 'vs': 'static/js/node_modules/monaco-editor/min/vs' }});
+    require.config({ paths: { 'vs': '/static/js/node_modules/monaco-editor/min/vs' }});
     require(['vs/editor/editor.main'], function() {
         editor = monaco.editor.create(document.getElementById('editor'), {
             theme: "vs-dark",
@@ -48,7 +48,7 @@
         });
     });
     
-    var url = window.location.href.substr(window.location.href.lastIndexOf("/")+1);
+    var url = window.location.href.split('http://localhost:8000/')[1];
 
     var save = setInterval(function(event) {
         var value = window.editor.getValue();

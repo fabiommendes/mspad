@@ -82,10 +82,9 @@ def editor(request, path, name, ext):
 
 
 def postForm(request, path, name, ext):
-
+    last_father = ""
     if path is not None:
         folders = path.split('/')
-        print(folders)
 
         for idx, folder in enumerate(folders):
             try:
@@ -94,12 +93,18 @@ def postForm(request, path, name, ext):
                 if idx == 0:
                     get_folder = Folder.objects.create(name=folder)
                 else:
-                    get_folder = Folder.objects.create(name=folder, folder=Folder.objects.get(name=last_father))
+                    try:
+                        folder = Folder.objects.get(name=last_father)
+                        get_folder = Folder.objects.create(name=folder, folder=folder)
+                    except TypeError:
+                        get_folder = Folder.objects.create(name=folder)
 
             last_father = folder
 
     try:
         archive = File.objects.get(name=name)
+        archive.text = request.POST['text']
+        archive.save()
     except File.DoesNotExist:
         archive = File.objects.create(text=request.POST['text'], name=name, uri=path+name+ext, folder=Folder.objects.get(name=last_father))
 

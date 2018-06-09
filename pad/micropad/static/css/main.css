@@ -1,0 +1,10 @@
+body {
+    background: black;
+    color: lime;
+    font-family: monospace;
+}
+
+#editor {
+    width: 100%;
+    height: 500px;
+}

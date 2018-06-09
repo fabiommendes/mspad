@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Micropad</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/unpoly.css">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/unpoly.js"></script>
+    <script src="/static/js/node_modules/monaco-editor/min/vs/loader.js"></script>
+    <script src="monaco-editor/min/vs/loader.js"></script>
+    <script src="/static/js/main.js"></script>
+</head>
+
+<body>
+{% block body %}
+    {% if body is defined %}
+        {{ body | default('It worked!') }}
+    {% else %}
+        <div id="editor"></div>
+    {% endif %}
+{% endblock %}
+
+<script>
+    var editor;
+
+    require.config({ paths: { 'vs': 'static/js/node_modules/monaco-editor/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+        editor = monaco.editor.create(document.getElementById('editor'), {
+            value: (
+                'function x() {\n' +
+                '    console.log("Hello world!");\n' +
+                '}'
+            ),
+            language: 'javascript'
+        });
+    });</script>
+</body>
+</html>

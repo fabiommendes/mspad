@@ -1,0 +1,9 @@
+django >= 2.0
+djangorestframework >= 3.0
+django-debug-toolbar
+jinja2
+pytest
+pytest-django
+pytest-coverage
+git+http://github.com/fabiommendes/django-boogie.git/
+git+http://github.com/fabiommendes/hyperpython.git/

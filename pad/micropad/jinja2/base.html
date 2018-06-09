@@ -16,10 +16,11 @@
     {% if body is defined %}
         {{ body | default('It worked!') }}
     {% else %}
-    <form method="GET" action="/" up-autosubmit>
-        <div class="container" style= "width:75rem">
-            <div id="editor"></div>
-        </div>
+    <div class="container" style= "width:75rem">
+        <div id="editor"></div>
+    </div>
+    <form method="GET" action="/">
+        <textarea class="editor-text" name="hide" style="display:none;"></textarea>
     </form>
     {% endif %}
 {% endblock %}
@@ -38,6 +39,14 @@
             ),
             language: 'javascript'
         });
-    });</script>
+    });
+    
+
+    var save = setInterval(function() {
+        var value = window.editor.getValue();
+        $(".editor-text").html(value);
+    }, 4000);
+
+    </script>
 </body>
 </html>

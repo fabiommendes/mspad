@@ -9,6 +9,7 @@
     <script src="/static/js/node_modules/monaco-editor/min/vs/loader.js"></script>
     <script src="monaco-editor/min/vs/loader.js"></script>
     <script src="/static/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 
 <body>
@@ -16,23 +17,57 @@
     {% if body is defined %}
         {{ body | default('It worked!') }}
     {% else %}
+    <div class="container" style= "width:75rem">
         <div id="editor"></div>
+    </div>
+    <div class="csrf">
+        {{ csrf_token }}
+    </div>
     {% endif %}
 {% endblock %}
 
 <script>
     var editor;
 
-    require.config({ paths: { 'vs': 'static/js/node_modules/monaco-editor/min/vs' }});
+    var getCSRFTokenValue = function() {
+        return $(".csrf").text().trim();
+    }
+
+    //$("body").bind("ajaxSend", function(elm, xhr, s){
+      //  if (s.type == "POST") {
+        //    xhr.setRequestHeader('X-CSRF-Token', getCSRFTokenValue());
+        //}    
+    //});
+
+    require.config({ paths: { 'vs': '/static/js/node_modules/monaco-editor/min/vs' }});
     require(['vs/editor/editor.main'], function() {
         editor = monaco.editor.create(document.getElementById('editor'), {
-            value: (
-                'function x() {\n' +
-                '    console.log("Hello world!");\n' +
-                '}'
-            ),
-            language: 'javascript'
+            theme: "vs-dark",
+          value: ('{{file.text}}'),
+          language: '{{language}}'
         });
-    });</script>
+    });
+    
+    var url = window.location.href.split('http://localhost:8000/')[1];
+
+    var save = setInterval(function(event) {
+        var value = window.editor.getValue();
+        $.ajax({
+            url: "/ajax/postForm/" + url,
+            type: "POST",
+            headers: {
+                'X-CSRFToken': getCSRFTokenValue(),
+            },
+            data: {
+                'text': value
+            },
+            error: function(jqXHR, textStatus, errorThrown, data) {
+            console.log(textStatus, errorThrown, data);
+            }
+        }); 
+    }, 4000);
+
+
+    </script>
 </body>
 </html>
